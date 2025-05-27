@@ -20,4 +20,4 @@ const sentEmailerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("SentEmailer", sentEmailerSchema);
+module.exports = mongoose.model("Emailer", sentEmailerSchema);

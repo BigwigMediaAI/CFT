@@ -3,7 +3,7 @@ const router = express.Router();
 const Subscriber = require("../models/subscriber.model");
 const sendEmail = require("../utils/sendEmail");
 const Newsletter = require("../models/newsletter");
-const SentEmailer = require("../models/SentEmailer");
+const Emailer = require("../models/SentEmailer");
 
 const multer = require("multer");
 const path = require("path");
@@ -286,7 +286,7 @@ router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
     });
 
     // 💾 Save the campaign
-    await SentEmailer.create({
+    await Emailer.create({
       subject,
       title,
       content,
