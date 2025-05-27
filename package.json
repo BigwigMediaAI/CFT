@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BigwigMediaAI/Mondus_Bakend"
+    "url": "git+https://github.com/BigwigMediaAI/CFT"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BigwigMediaAI/Mondus_Bakend/issues"
+    "url": "https://github.com/BigwigMediaAI/CFT/issues"
   },
-  "homepage": "https://github.com/BigwigMediaAI/Mondus_Bakend#readme",
+  "homepage": "https://github.com/BigwigMediaAI/CFT#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
