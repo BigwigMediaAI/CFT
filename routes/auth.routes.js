@@ -53,4 +53,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/allUser", async (req, res) => {
+  try {
+    const user = await User.find().sort({ createdAt: -1 });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
 module.exports = router;

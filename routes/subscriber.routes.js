@@ -234,6 +234,15 @@ router.post("/send-newsletter", async (req, res) => {
   }
 });
 
+router.get("/newsletter", async (req, res) => {
+  try {
+    const newsletters = await Newsletter.find().sort({ createdAt: -1 });
+    res.status(200).json(newsletters);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
   try {
     const {
@@ -307,6 +316,15 @@ router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
   } catch (error) {
     console.error("❌ Error sending emailer:", error);
     res.status(500).json({ error: "Failed to send email" });
+  }
+});
+
+router.get("/emailer", async (req, res) => {
+  try {
+    const emailers = await Emailer.find().sort({ createdAt: -1 });
+    res.status(200).json(emailers);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
   }
 });
 
