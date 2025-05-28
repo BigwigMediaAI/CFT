@@ -4,14 +4,14 @@ const Lead = require("../models/Lead");
 
 // POST /api/popup-lead
 router.post("/popup-lead", async (req, res) => {
-  const { fullName, phone, marketSegment } = req.body;
+  const { fullName, phone, marketSegment, email } = req.body;
 
-  if (!fullName || !phone || !marketSegment) {
+  if (!fullName || !phone || !marketSegment || !email) {
     return res.status(400).json({ error: "All fields are required." });
   }
 
   try {
-    const lead = new Lead({ fullName, phone, marketSegment });
+    const lead = new Lead({ fullName, phone, marketSegment, email });
     await lead.save();
 
     res.status(201).json({
