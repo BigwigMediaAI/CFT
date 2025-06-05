@@ -4,35 +4,36 @@ const enquirySchema = require("../models/chatbot.model");
 const sendEmail = require("../utils/sendEmail");
 const OpenAI = require("openai");
 require("dotenv").config();
-const authenticateUser = require("../middlewares/authMiddleware"); // add this
 
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 const companyInfo = `
-**About Granth Dream Homes**
-Granth Dream Homes LLP is a luxury-focused real estate company based in Goa, India. Originating from our successful parent company, Mondus Properties in Dubai (with over $5B in sales), we bring international standards, unmatched expertise, and client-first values to India's property landscape.
+**About Close Friends Traders**
+Close Friends Traders is a modern, community-driven trading platform providing expert support, strategy guidance, and real-time market assistance for retail and aspiring traders across India. We are committed to helping you navigate the financial markets with confidence and clarity.
 
 **Why Choose Us**
-- Trusted expertise from Dubai to India with 7+ years of experience
-- Clear, transparent, and ethical real estate processes
-- Commitment to excellence in design, location, and quality
-- Tailored solutions for every buyer – from homeowners to investors
+- Backed by a team of seasoned traders with years of experience in Indian stock markets
+- Transparent advice, real-time trade ideas, and practical support
+- Community-first approach focused on collaboration and shared learning
+- 24/7 chatbot support and access to human trading experts when needed
 
 **Our Services**
-1. **Luxury Residential Sales**: Helping clients buy dream homes in Goa’s most desired areas.
-2. **Property Management**: Complete maintenance and rental support for your property.
-3. **Investment Advisory**: Expert guidance on high-yield real estate investments in Goa.
-4. **Vacation Homes & Rentals**: Turn properties into income-generating assets.
-5. **Custom Villa Projects**: Build luxurious bespoke villas with top-tier craftsmanship.
+1. **Equity & Derivatives Trading**: Get help with intraday and positional trades in NSE/BSE stocks, options, and futures.
+2. **Commodity & Currency Markets**: Trade commodities via MCX and currencies via forex support.
+3. **Trading Education & Mentorship**: Free and premium sessions to help beginners and intermediates build skills.
+4. **Live Market Guidance**: Get real-time trade signals, market analysis, and updates during trading hours.
+5. **Portfolio & Risk Management**: Learn how to manage capital, set stop losses, and build a long-term strategy.
+6. **Telegram & WhatsApp Community Access**: Join our active trader groups for daily tips, signals, and expert Q&A.
 
 **Vision**
-To redefine the real estate experience in Goa by delivering luxury, comfort, and trust to every client.
+To create India’s most trusted and inclusive trading community by blending expert insight with personalized support.
 
 **Target Clients**
-- First-time buyers
-- NRI investors
-- Holiday home seekers
-- Institutional investors
+- Intraday & swing traders
+- Beginners looking to enter the stock market
+- Option and futures traders
+- Commodity market participants
+- Traders seeking mentorship, signals, or daily market guidance
 `;
 
 // POST /api/prompt/submit
@@ -76,13 +77,10 @@ router.post("/enquiry", async (req, res) => {
   }
 });
 
-// ChatBot initialization starts here
-
 const ChatbotModel = require("../models/chatbot.model");
 
-router.post("/chatbot", authenticateUser, async (req, res) => {
+router.post("/chatbot", async (req, res) => {
   const { message } = req.body;
-  const user = req.user;
 
   if (!message) {
     return res.status(400).json({ error: "Message is required" });
@@ -90,11 +88,9 @@ router.post("/chatbot", authenticateUser, async (req, res) => {
 
   try {
     const prompt = `
-You are a helpful chatbot for Granth Dream Homes, a luxury real estate company in Goa.
-
-This user is logged in:
-- Name: ${user.fullName}
-- Email: ${user.email}
+You are a helpful chatbot for Close Friends Traders, a trading education and support company based in India. 
+Use the company details below to answer the user's question in a friendly, informative, and beginner-friendly way. 
+If the question is unclear, guide the user to ask a trading-related query (like stock market tips, option strategy, or joining our community).
 
 Company Info:
 ${companyInfo}
@@ -115,13 +111,13 @@ User Question: ${message}
       response.choices[0].message.content.trim() ||
       "Sorry, I couldn’t find an answer.";
 
-    // Save to DB with user info
+    // Save to DB
     await ChatbotModel.create({
       userMessage: message,
       botReply: reply,
     });
 
-    res.json({ reply, userName: user.fullName }); // 👈 send name to frontend
+    res.json({ reply });
   } catch (error) {
     console.error("Chatbot error:", error);
     res.status(500).json({ error: "Something went wrong with the chatbot." });
