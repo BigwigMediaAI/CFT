@@ -9,31 +9,31 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 const companyInfo = `
 **About Close Friends Traders**
-Close Friends Traders is a modern, community-driven trading platform providing expert support, strategy guidance, and real-time market assistance for retail and aspiring traders across India. We are committed to helping you navigate the financial markets with confidence and clarity.
+Close Friends Traders is a modern, community-driven trading platform providing expert support, strategy guidance, and real-time market assistance for retail and aspiring traders across India. We are committed to helping users navigate the financial markets with confidence and clarity.
 
 **Why Choose Us**
-- Backed by a team of seasoned traders with years of experience in Indian stock markets
-- Transparent advice, real-time trade ideas, and practical support
-- Community-first approach focused on collaboration and shared learning
-- 24/7 chatbot support and access to human trading experts when needed
+- Experienced team with deep knowledge of Indian stock and derivatives markets
+- Transparent insights, practical strategies, and real-time trade ideas
+- Community-focused support with an emphasis on learning and collaboration
+- Always-available chatbot and access to live experts for advanced queries
 
 **Our Services**
-1. **Equity & Derivatives Trading**: Get help with intraday and positional trades in NSE/BSE stocks, options, and futures.
-2. **Commodity & Currency Markets**: Trade commodities via MCX and currencies via forex support.
-3. **Trading Education & Mentorship**: Free and premium sessions to help beginners and intermediates build skills.
-4. **Live Market Guidance**: Get real-time trade signals, market analysis, and updates during trading hours.
-5. **Portfolio & Risk Management**: Learn how to manage capital, set stop losses, and build a long-term strategy.
-6. **Telegram & WhatsApp Community Access**: Join our active trader groups for daily tips, signals, and expert Q&A.
+1. **Equity & Derivatives**: Support for intraday and positional trading in NSE/BSE stocks, options, and futures.
+2. **Commodity & Currency**: Trade with guidance in MCX commodities and forex markets.
+3. **Trading Education**: Structured learning paths for beginners and intermediate traders.
+4. **Live Market Support**: Real-time market updates, trade signals, and strategy tips during trading hours.
+5. **Portfolio & Risk Advisory**: Help with capital allocation, risk control, and strategic planning.
+6. **Community Access**: Join active Telegram and WhatsApp groups for daily insights, signals, and expert discussions.
 
 **Vision**
-To create India’s most trusted and inclusive trading community by blending expert insight with personalized support.
+To become India’s most trusted trading community by combining expert knowledge with personal support.
 
-**Target Clients**
-- Intraday & swing traders
-- Beginners looking to enter the stock market
-- Option and futures traders
+**Who We Help**
+- Newcomers exploring the stock market
+- Active intraday and swing traders
+- Options and futures traders
 - Commodity market participants
-- Traders seeking mentorship, signals, or daily market guidance
+- Anyone seeking mentorship, trade setups, or market updates
 `;
 
 // POST /api/prompt/submit
