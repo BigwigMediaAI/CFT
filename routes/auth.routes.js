@@ -2,15 +2,16 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const sendWelcomeMessage = require("../utils/sendWhatsAppMessage");
 
 const router = express.Router();
 const JWT_SECRET = "your_secret_key"; // Replace with env var in production
 
 // Sign Up
 router.post("/signup", async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, Phone } = req.body;
 
-  if (!fullName || !email || !password) {
+  if (!fullName || !email || !password || !Phone) {
     return res.status(400).json({ error: "All fields are required." });
   }
 
@@ -20,8 +21,9 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Email already in use." });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ fullName, email, password: hashedPassword });
+    const user = new User({ fullName, email, password: hashedPassword, Phone });
     await user.save();
+    await sendWelcomeMessage(Phone);
 
     res.status(201).json({ message: "Signup successful.", fullName, email });
   } catch (err) {
