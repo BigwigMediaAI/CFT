@@ -4,11 +4,11 @@ exports.newBlogPost = async (req, res) => {
   try {
     const { title, slug, excerpt, content, author, tags } = req.body;
 
-    if (!req.file) {
+    if (!req.file || (!req.file.path && !req.file.secure_url)) {
       return res.status(400).json({ error: "Cover image is required." });
     }
 
-    const coverImage = `/uploads/${req.file.filename}`;
+    const coverImage = req.file.secure_url || req.file.path;
 
     const blogPost = new BlogPost({
       title,
@@ -16,8 +16,8 @@ exports.newBlogPost = async (req, res) => {
       excerpt,
       content,
       author,
-      coverImage,
       tags,
+      coverImage,
     });
 
     await blogPost.save();
@@ -35,13 +35,13 @@ exports.newBlogPost = async (req, res) => {
 exports.getBlog = async (req, res) => {
   try {
     const data = await BlogPost.find();
-    if (!data) {
-      res.status(401).json({ msg: "data not found" });
-    } else {
-      res.status(200).json(data);
+    if (!data || data.length === 0) {
+      return res.status(404).json({ msg: "No blog posts found" });
     }
+    res.status(200).json(data);
   } catch (error) {
-    console.log(error);
+    console.log("Error fetching blogs:", error);
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 
@@ -59,8 +59,8 @@ exports.updateBlogPostBySlug = async (req, res) => {
       lastUpdated: new Date(),
     };
 
-    if (req.file) {
-      updateFields.coverImage = `/uploads/${req.file.filename}`;
+    if (req.file && (req.file.secure_url || req.file.path)) {
+      updateFields.coverImage = req.file.secure_url || req.file.path;
     }
 
     const updatedBlogPost = await BlogPost.findOneAndUpdate(
@@ -95,7 +95,7 @@ exports.deleteBlogPostBySlug = async (req, res) => {
 
     res.status(200).json({ msg: "Blog post deleted successfully" });
   } catch (error) {
-    console.error(error.message);
+    console.error("Delete error:", error.message);
     res.status(500).json({ msg: "Server Error" });
   }
 };

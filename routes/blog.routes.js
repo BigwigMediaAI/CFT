@@ -5,7 +5,10 @@ const {
   updateBlogPostBySlug,
   deleteBlogPostBySlug,
 } = require("../controller/Blog.controller");
-const upload = require("../middlewares/upload");
+const multer = require("multer");
+
+const storage = require("../config/storage");
+const upload = multer({ storage });
 
 router.post("/add", upload.single("coverImage"), newBlogPost);
 router.get("/viewblog", getBlog);
