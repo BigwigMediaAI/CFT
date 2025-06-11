@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const sendWelcomeMessage = require("../utils/sendWhatsAppMessage");
+const sendEmail = require("../utils/sendEmail");
 
 const router = express.Router();
 const JWT_SECRET = "your_secret_key"; // Replace with env var in production
@@ -23,6 +24,21 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ fullName, email, password: hashedPassword, Phone });
     await user.save();
+    await sendEmail({
+      to: email,
+      subject: "🎉 You are subscribed to our Newsletter",
+      text: "Thank you for subscribing",
+      html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+              <h2>✅ Subscription Confirmed</h2>
+              <p>Hi there,</p>
+              <p>Thank you for subscribing to our newsletter We'll keep you updated with the latest news, offers, and insights.</p>
+              <hr style="margin: 20px 0;" />
+              <p style="font-size: 14px; color: #888;">If you didn’t subscribe, please ignore this email.</p>
+              <p>Best regards,<br>The Team</p>
+            </div>
+          `,
+    });
     await sendWelcomeMessage(Phone);
 
     res.status(201).json({ message: "Signup successful.", fullName, email });

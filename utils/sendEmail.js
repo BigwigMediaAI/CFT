@@ -1,25 +1,25 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const sendEmail = async ({ to, subject, text, html, attachments }) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.hostinger.com", // 👈 likely SMTP for cPanel
+      port: 465,
+      secure: true, // true for 465 (SSL), false for 587 (TLS)
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
     });
 
     const mailOptions = {
-      from: `"Close Friends Traders" <${process.env.EMAIL_USER}>`,
+      from: `"Close Friends Traders" <support@closefriendstraders.com>`,
       to,
       subject,
       text,
       html,
-      attachments, // ✅ INCLUDE THIS LINE
+      attachments,
     };
 
     await transporter.sendMail(mailOptions);
