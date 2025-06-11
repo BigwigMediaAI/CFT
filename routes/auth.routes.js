@@ -26,16 +26,36 @@ router.post("/signup", async (req, res) => {
     await user.save();
     await sendEmail({
       to: email,
-      subject: "🎉 You are subscribed to our Newsletter",
-      text: "Thank you for subscribing",
+      subject: "Your Trading Journey Begins — Let’s Maximize Your Profits! 🚀",
+      text: "Welcome to Close Friends Traders! You've taken the first step toward smarter trading. Log in and start trading today!",
       html: `
             <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-              <h2>✅ Subscription Confirmed</h2>
-              <p>Hi there,</p>
-              <p>Thank you for subscribing to our newsletter We'll keep you updated with the latest news, offers, and insights.</p>
-              <hr style="margin: 20px 0;" />
-              <p style="font-size: 14px; color: #888;">If you didn’t subscribe, please ignore this email.</p>
-              <p>Best regards,<br>The Team</p>
+              <p>Hello ${fullName},</p>
+              <p>
+                Welcome to <strong>Close Friends Traders</strong>! 🎯<br/>
+                You've just taken the first step toward smarter, more profitable trading. 💹
+              </p>
+              <ul>
+                      <li>✅ Real-time market insights</li>
+                      <li>✅ Expert trading strategies</li>
+                      <li>✅ Exclusive tools to spot opportunities</li>
+                      <li>✅ Fast & secure transactions</li>
+              </ul>             
+                <p>
+        💡 <strong>Start exploring today and unlock your trading potential!</strong>
+                </p>              
+                <p>
+        👉 <a href="https://trading-two-kappa.vercel.app/login" style="color: #1d4ed8; text-decoration: underline;">Log In & Start Trading Now</a>
+                </p>   
+                <p>
+        Need help getting started? Our team is here to guide you every step of the way. 📞📩
+      </p>        
+            <p style="margin-top: 30px;">Let’s grow your portfolio together! 🌱📊</p>
+                
+            <div style="margin-top: 40px; text-align: center;">
+        <img src="https://closefriendstraders.com/wp-content/uploads/2024/09/logo-01.svg" alt="CFT Logo" width="150" style="margin-bottom: 10px;" />
+        <p style="font-size: 14px; color: #888;">Team<br/>Close Friends Traders<br/>Your trusted trading partner</p>
+      </div>
             </div>
           `,
     });
