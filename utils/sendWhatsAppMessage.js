@@ -12,7 +12,7 @@ async function sendWelcomeMessage(userPhoneNumber) {
       from: "whatsapp:+14155238886", // Twilio Sandbox number for WhatsApp
       contentSid: process.env.CONTENT_SID, // Make sure this is a valid approved content template SID
       contentVariables: JSON.stringify({
-        1: "👋 Welcome to DesiChulha! We’re excited to have you here 🎉",
+        1: "👋 Welcome to close friends traders We’re excited to have you here 🎉",
       }),
       to: `whatsapp:${userPhoneNumber}`, // Format: whatsapp:+919XXXXXXXXX
     });

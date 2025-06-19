@@ -4,7 +4,7 @@ const { connect } = require("./config/db");
 const subscriberRoutes = require("./routes/subscriber.routes");
 const popupLeadRoute = require("./routes/popup.routes");
 const authRoutes = require("./routes/auth.routes");
-const ChatBot = require("./routes/enquiry.routes");
+// const ChatBot = require("./routes/enquiry.routes");
 const BlogRoute = require("./routes/blog.routes");
 
 require("dotenv").config();
@@ -18,7 +18,7 @@ app.use(cors());
 app.use("/", subscriberRoutes);
 app.use("/api", popupLeadRoute);
 app.use("/api/auth", authRoutes);
-app.use("/api/enquiry", ChatBot);
+// app.use("/api/enquiry", ChatBot);
 app.use("/api/blogs", BlogRoute);
 
 // Start server
