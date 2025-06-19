@@ -12,7 +12,8 @@ const JWT_SECRET = "your_secret_key"; // Use env variable in production
 const generateOtp = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
-// ✅ Step 1: Send OTP
+const otpStore = new Map(); // Temporary in-memory store for OTPs
+
 router.post("/send-otp", async (req, res) => {
   const { email, Phone, fullName } = req.body;
 
@@ -22,30 +23,27 @@ router.post("/send-otp", async (req, res) => {
       .json({ error: "Full name, email, and phone are required." });
 
   const existingUser = await User.findOne({ email });
-
   if (existingUser && existingUser.isVerified) {
     return res.status(400).json({ error: "Email already in use." });
   }
 
   const otp = generateOtp();
 
-  const user = await User.findOneAndUpdate(
-    { email },
-    { email, Phone, fullName, otp, isVerified: false },
-    { upsert: true, new: true }
-  );
+  // Store in memory (or use Redis for production)
+  otpStore.set(email, { otp, fullName, Phone });
 
-  // ✅ Send OTP Email
+  // Send OTP via email
   await sendEmail({
     to: email,
     subject: "Email Verification - Close Friends Traders",
     text: `Your OTP is: ${otp}`,
     html: `<p>Hi ${fullName},</p><p>Your OTP is: <strong>${otp}</strong></p><p>Use this to complete your signup.</p>`,
   });
+
   res.json({ message: "OTP sent to your email." });
 });
 
-// ✅ Step 2: Verify OTP and Set Password
+// ✅ Step 1: Send OTP
 router.post("/verify-otp", async (req, res) => {
   const { email, otp, password } = req.body;
 
@@ -54,26 +52,33 @@ router.post("/verify-otp", async (req, res) => {
       .status(400)
       .json({ error: "Email, OTP, and password required." });
 
-  const user = await User.findOne({ email });
-
-  if (!user || user.otp !== otp)
+  const storedData = otpStore.get(email);
+  if (!storedData || storedData.otp !== otp) {
     return res.status(400).json({ error: "Invalid or expired OTP." });
+  }
 
+  const { fullName, Phone } = storedData;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  user.password = hashedPassword;
-  user.otp = null;
-  user.isVerified = true;
-  await user.save();
-
-  await sendWelcomeMessage(user.Phone);
-  // ✅ Send welcome email
-  await sendEmail({
-    to: user.email,
-    subject: "Welcome to Close Friends Traders!",
-    text: `Welcome to Close Friends Traders, ${user.fullName}! Your account is now verified.`,
-    html: `<p>Hi ${user.fullName},</p><p>Welcome aboard! Your account has been successfully verified.</p><p>Let's start your trading journey!</p>`,
+  const newUser = new User({
+    email,
+    Phone,
+    fullName,
+    password: hashedPassword,
+    isVerified: true,
   });
+
+  await newUser.save();
+  otpStore.delete(email); // Clear temp store
+
+  await sendWelcomeMessage(Phone);
+  await sendEmail({
+    to: email,
+    subject: "Welcome to Close Friends Traders!",
+    text: `Welcome to Close Friends Traders, ${fullName}! Your account is now verified.`,
+    html: `<p>Hi ${fullName},</p><p>Welcome aboard! Your account has been successfully verified.</p><p>Let's start your trading journey!</p>`,
+  });
+
   res.status(201).json({ message: "Signup and verification successful." });
 });
 
