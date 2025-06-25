@@ -65,10 +65,9 @@ exports.OfferUpdate = async (req, res) => {
       ctaLink,
       startDate: startDate ? new Date(startDate) : null,
       endDate: endDate ? new Date(endDate) : null,
-      isActive: isActive === "true",
+      isActive: isActive === "true" || isActive === true,
     };
 
-    // If new files uploaded
     if (req.files?.bannerImage?.[0]) {
       updateData.bannerImage = req.files.bannerImage[0].path;
     }
