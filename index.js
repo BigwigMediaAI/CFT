@@ -23,6 +23,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/blogs", BlogRoute);
 app.use("/api/offer", OfferROutes);
 
+app.get("/", (req, res) => {
+  res.send("API LIVE");
+});
+
 // Start server
 app.listen(process.env.PORT, async () => {
   try {
