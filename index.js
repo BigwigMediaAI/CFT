@@ -6,6 +6,7 @@ const popupLeadRoute = require("./routes/popup.routes");
 const authRoutes = require("./routes/auth.routes");
 // const ChatBot = require("./routes/enquiry.routes");
 const BlogRoute = require("./routes/blog.routes");
+const OfferROutes = require("./routes/offer.Routes");
 
 require("dotenv").config();
 
@@ -20,6 +21,7 @@ app.use("/api", popupLeadRoute);
 app.use("/api/auth", authRoutes);
 // app.use("/api/enquiry", ChatBot);
 app.use("/api/blogs", BlogRoute);
+app.use("/api/offer", OfferROutes);
 
 // Start server
 app.listen(process.env.PORT, async () => {
