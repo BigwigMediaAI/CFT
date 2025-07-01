@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Lead = require("../models/Lead");
 const sendWhatsAppMessage = require("../utils/sendWhatsAppMessage");
+const sendEmail = require("../utils/sendEmail");
 
 // POST /api/popup-lead
 router.post("/popup-lead", async (req, res) => {
@@ -16,6 +17,12 @@ router.post("/popup-lead", async (req, res) => {
     await lead.save();
     // ✅ Send WhatsApp Template
     await sendWhatsAppMessage(phone);
+    await sendEmail({
+      to: email,
+      subject: "Welcome to Close Friends Traders!",
+      text: `Welcome to Close Friends Traders, ${fullName}! Your account is now verified.`,
+      html: `<p>Hi ${fullName},</p><p>Welcome aboard! Your account has been successfully verified.</p><p>Let's start your trading journey!</p>`,
+    });
 
     res.status(201).json({
       message: "Your request has been received. We’ll contact you shortly.",
