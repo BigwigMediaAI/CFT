@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Lead = require("../models/Lead");
+const sendWhatsAppMessage = require("../utils/sendWhatsAppMessage");
 
 // POST /api/popup-lead
 router.post("/popup-lead", async (req, res) => {
@@ -13,6 +14,8 @@ router.post("/popup-lead", async (req, res) => {
   try {
     const lead = new Lead({ fullName, phone, marketSegment, email });
     await lead.save();
+    // ✅ Send WhatsApp Template
+    await sendWhatsAppMessage(phone);
 
     res.status(201).json({
       message: "Your request has been received. We’ll contact you shortly.",

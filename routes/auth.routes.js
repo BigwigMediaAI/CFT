@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const sendEmail = require("../utils/sendEmail");
-const sendWelcomeMessage = require("../utils/sendWhatsAppMessage");
+const sendWhatsAppMessage = require("../utils/sendWhatsAppMessage");
 
 const router = express.Router();
 const JWT_SECRET = "your_secret_key"; // Use env variable in production
@@ -71,7 +71,10 @@ router.post("/verify-otp", async (req, res) => {
   await newUser.save();
   otpStore.delete(email); // Clear temp store
 
-  await sendWelcomeMessage(Phone);
+  // ✅ Send WhatsApp Template
+  await sendWhatsAppMessage(Phone);
+
+  // ✅ Send Email
   await sendEmail({
     to: email,
     subject: "Welcome to Close Friends Traders!",

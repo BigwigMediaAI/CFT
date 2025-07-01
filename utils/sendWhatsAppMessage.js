@@ -1,26 +1,25 @@
 // sendWhatsAppMessage.js
-const twilio = require("twilio");
-require("dotenv").config();
+const axios = require("axios");
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = twilio(accountSid, authToken);
+async function sendWhatsAppMessage(phoneNumber) {
+  const url =
+    `https://dash.teleobi.com/api/v1/whatsapp/send/template?` +
+    `apiToken=10297|9LEq6EUhVqDgTtmLHqHFDRapaeQOCe9zeEZn05Rkfb2ee71a` +
+    `&phone_number_id=575729582297281` +
+    `&template_id=194036` +
+    `&template_header_media_url=https%3A%2F%2Fbot-data.s3.ap-southeast-1.wasabisys.com%2Fupload%2F2025%2F6%2Fflowbuilder%2Fflowbuilder-131168-1751101602.jpeg` +
+    `&template_quick_reply_button_values=%5B%22IrnmUbsThewnnzI%22%2C%22bqxfB46dIvDzOdE%22%2C%22zYhlMBonu2QYd4-%22%5D` +
+    `&phone_number=${encodeURIComponent(phoneNumber)}`;
 
-async function sendWelcomeMessage(userPhoneNumber) {
   try {
-    const message = await client.messages.create({
-      from: "whatsapp:+14155238886", // Twilio Sandbox number for WhatsApp
-      contentSid: process.env.CONTENT_SID, // Make sure this is a valid approved content template SID
-      contentVariables: JSON.stringify({
-        1: "👋 Welcome to close friends traders We’re excited to have you here 🎉",
-      }),
-      to: `whatsapp:${userPhoneNumber}`, // Format: whatsapp:+919XXXXXXXXX
-    });
-
-    console.log("✅ Message sent:", message.sid);
+    const response = await axios.get(url);
+    console.log("✅ WhatsApp template message sent:", response.data);
   } catch (error) {
-    console.error("❌ Error sending WhatsApp message:", error);
+    console.error(
+      "❌ Failed to send WhatsApp message:",
+      error.response?.data || error.message
+    );
   }
 }
 
-module.exports = sendWelcomeMessage;
+module.exports = sendWhatsAppMessage;
