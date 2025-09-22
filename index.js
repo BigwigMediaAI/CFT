@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth.routes");
 const BlogRoute = require("./routes/blog.routes");
 const OfferROutes = require("./routes/offer.Routes");
 const IBRoutes = require("./routes/IBRoutes");
+const ticketRoutes = require("./routes/ticketRoutes");
 
 require("dotenv").config();
 
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/blogs", BlogRoute);
 app.use("/api/offer", OfferROutes);
 app.use("/api/ib", IBRoutes);
+app.use("/api/tickets", ticketRoutes);
 
 app.get("/", (req, res) => {
   res.send("API LIVE");
