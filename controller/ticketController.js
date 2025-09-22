@@ -31,25 +31,25 @@ exports.createTicket = async (req, res) => {
       description,
     });
 
-    await sendEmail({
-      to: process.env.EMAIL_USER,
-      subject: `🎫 New Ticket from ${user.name || email}`,
-      text: `A new support ticket has been created.
+    //     await sendEmail({
+    //       to: process.env.EMAIL_USER,
+    //       subject: `🎫 New Ticket from ${user.name || email}`,
+    //       text: `A new support ticket has been created.
 
-User: ${user.name || "N/A"} (${email})
-Category: ${category}
-Subject: ${subject}
-Description: ${description}`,
-      html: `
-        <h2>New Support Ticket</h2>
-        <p><strong>User:</strong> ${user.name || "N/A"} (${email})</p>
-        <p><strong>Category:</strong> ${category}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <p><strong>Description:</strong> ${description}</p>
-        <br/>
-        <small>This is an automated notification.</small>
-      `,
-    });
+    // User: ${user.name || "N/A"} (${email})
+    // Category: ${category}
+    // Subject: ${subject}
+    // Description: ${description}`,
+    //       html: `
+    //         <h2>New Support Ticket</h2>
+    //         <p><strong>User:</strong> ${user.name || "N/A"} (${email})</p>
+    //         <p><strong>Category:</strong> ${category}</p>
+    //         <p><strong>Subject:</strong> ${subject}</p>
+    //         <p><strong>Description:</strong> ${description}</p>
+    //         <br/>
+    //         <small>This is an automated notification.</small>
+    //       `,
+    //     });
 
     res.status(201).json(ticket);
   } catch (err) {
