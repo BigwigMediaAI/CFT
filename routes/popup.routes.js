@@ -3,7 +3,7 @@ const router = express.Router();
 const Lead = require("../models/Lead");
 const sendWhatsAppOTP = require("../utils/sendWhatsAppOTP");
 const sendEmail = require("../utils/sendEmail");
-const sendWhatsAppMessage = require("../utils/sendWhatsAppMessage");
+const sendWhatsAppMessage = require("../utils/sendWhatsAppOTP");
 
 // POST /api/popup-lead/send-otp
 router.post("/send-otp", async (req, res) => {

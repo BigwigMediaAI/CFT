@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Subscriber = require("../models/subscriber.model");
 const sendEmail = require("../utils/sendEmail");
-const Newsletter = require("../models/newsletter");
+// const Newsletter = require("../models/newsletter");
 const Emailer = require("../models/SentEmailer");
 
 const multer = require("multer");
@@ -234,14 +234,14 @@ router.post("/send-newsletter", async (req, res) => {
   }
 });
 
-router.get("/newsletter", async (req, res) => {
-  try {
-    const newsletters = await Newsletter.find().sort({ createdAt: -1 });
-    res.status(200).json(newsletters);
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
+// router.get("/newsletter", async (req, res) => {
+//   try {
+//     const newsletters = await Newsletter.find().sort({ createdAt: -1 });
+//     res.status(200).json(newsletters);
+//   } catch (error) {
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
 
 router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
   try {
