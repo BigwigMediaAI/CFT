@@ -4,6 +4,7 @@ const {
   getBlog,
   updateBlogPostBySlug,
   deleteBlogPostBySlug,
+  updateBlogImageBySlug,
 } = require("../controller/Blog.controller");
 const multer = require("multer");
 
@@ -14,5 +15,10 @@ router.post("/add", upload.single("coverImage"), newBlogPost);
 router.get("/viewblog", getBlog);
 router.put("/:slug", upload.single("coverImage"), updateBlogPostBySlug);
 router.delete("/:slug", deleteBlogPostBySlug);
+router.patch(
+  "/:slug/image",
+  upload.single("coverImage"),
+  updateBlogImageBySlug
+);
 
 module.exports = router;
