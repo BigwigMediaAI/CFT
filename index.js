@@ -9,6 +9,8 @@ const BlogRoute = require("./routes/blog.routes");
 const OfferROutes = require("./routes/offer.Routes");
 const IBRoutes = require("./routes/IBRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const moneyplantRoutes = require("./routes/moneyplant.routes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 require("dotenv").config();
 
@@ -26,6 +28,8 @@ app.use("/api/blogs", BlogRoute);
 app.use("/api/offer", OfferROutes);
 app.use("/api/ib", IBRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/moneyplant", moneyplantRoutes);
+app.use("/api/payment", paymentRoutes);
 
 app.get("/", (req, res) => {
   res.send("API LIVE");
