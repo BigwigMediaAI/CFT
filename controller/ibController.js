@@ -46,7 +46,7 @@ const registerIB = async (req, res) => {
 
     // ✅ Send email to admin
     await sendEmail({
-      to: "support@billiondollarfx.com",
+      to: "chandan@bigwigmedia.in",
       subject: "🚀 New IB Request Submitted",
       html: `
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
