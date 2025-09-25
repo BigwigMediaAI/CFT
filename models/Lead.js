@@ -8,6 +8,7 @@ const leadSchema = new mongoose.Schema({
   marketSegment: { type: String, required: true },
   otp: { type: String, default: null }, // ✅ Store OTP
   isVerified: { type: Boolean, default: false }, // ✅ Track verification
+  isChecked: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

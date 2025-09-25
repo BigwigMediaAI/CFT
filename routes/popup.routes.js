@@ -30,26 +30,6 @@ router.post("/send-otp", async (req, res) => {
 
     await lead.save();
 
-    // // ✅ Send OTP via Email
-    // await sendEmail({
-    //   to: email,
-    //   subject: "Verify Your Email - Close Friends Traders",
-    //   html: `
-    //     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-    //       <h2 style="color: #2e86de;">Close Friends Traders</h2>
-    //       <p style="font-size: 16px;">Hi ${fullName},</p>
-    //       <p>Thanks for signing up. Use the OTP below to verify your email:</p>
-    //       <div style="text-align: center; margin: 30px 0;">
-    //         <span style="font-size: 32px; font-weight: bold; color: #2e86de;">${otp}</span>
-    //       </div>
-    //       <p>This OTP is valid for 10 minutes. Do not share it with anyone.</p>
-    //       <p>Need help? Email <a href="mailto:support@closefriendstraders.com">support@closefriendstraders.com</a></p>
-    //       <p>© ${new Date().getFullYear()} Close Friends Traders</p>
-    //     </div>
-    //   `,
-    // });
-
-    // ✅ Send OTP via WhatsApp
     const waResult = await sendWhatsAppOTP(phone, otp);
 
     if (!waResult.success) {
@@ -140,6 +120,45 @@ router.get("/popup-lead-graph", async (req, res) => {
     res.status(200).json(data); // Returns array of { _id: "YYYY-MM-DD", count: Number }
   } catch (error) {
     console.error("Error fetching lead graph data:", error);
+    res.status(500).json({ error: "Server error. Please try again later." });
+  }
+});
+
+// PATCH /api/popup-lead/:id/check
+router.patch("/popup-lead/:id/check", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isChecked } = req.body;
+
+    const lead = await Lead.findByIdAndUpdate(id, { isChecked }, { new: true });
+
+    if (!lead) {
+      return res.status(404).json({ error: "Lead not found." });
+    }
+
+    res.status(200).json({
+      message: `Lead marked as ${isChecked ? "checked" : "unchecked"}.`,
+      lead,
+    });
+  } catch (error) {
+    console.error("Error updating lead check status:", error);
+    res.status(500).json({ error: "Server error. Please try again later." });
+  }
+});
+
+// DELETE /api/popup-lead/:id
+router.delete("/popup-lead/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const lead = await Lead.findByIdAndDelete(id);
+
+    if (!lead) {
+      return res.status(404).json({ error: "Lead not found." });
+    }
+
+    res.status(200).json({ message: "Lead deleted successfully.", lead });
+  } catch (error) {
+    console.error("Error deleting lead:", error);
     res.status(500).json({ error: "Server error. Please try again later." });
   }
 });
